@@ -31,6 +31,7 @@ class Crawler:
     def crawlMembers(self):
         url = Crawler.douban_url + '/group/' + self.group_id + '/members'
         while url:
+            time.sleep(1 + random.random())
             print('Scraping page: ' + url)
             re = requests.get(url, cookies=self.cookies, headers=self.headers)
             soup = bs4.BeautifulSoup(re.content, 'html.parser')
@@ -44,13 +45,13 @@ class Crawler:
             if not soup.find(rel='next'):
                 break
             url = soup.find(rel='next').get('href')
-            time.sleep(0.5 * random.random())
         print('Done crawling all memebers: ')
         print(self.user_map)
 
     def crawlContacts(self):
         for user in self.user_map:
             url = Crawler.douban_url + '/people/' + user + '/contacts'
+            time.sleep(1 + random.random())
             print('Scraping contacts: ' + url)
             re = requests.get(url, cookies=self.cookies, headers=self.headers)
             soup = bs4.BeautifulSoup(re.content, 'html.parser')
