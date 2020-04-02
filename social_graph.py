@@ -1,8 +1,10 @@
 import argparse
 import bs4
 import graphviz as gv
+import random
 import requests
 import re
+import time
 import yaml
 
 
@@ -27,9 +29,9 @@ class Crawler:
         return 'output/' + self.group_id + '.gv'
 
     def crawlMembers(self):
-        url = Crawler.douban_url + '/group/' + self.group_id + ''/members'
+        url = Crawler.douban_url + '/group/' + self.group_id + '/members'
         while url:
-            print('Scraping page: '' + url)
+            print('Scraping page: ' + url)
             re = requests.get(url, cookies=self.cookies, headers=self.headers)
             soup = bs4.BeautifulSoup(re.content, 'html.parser')
             for user in soup.findAll('div', {'class': 'name'}):
@@ -42,6 +44,7 @@ class Crawler:
             if not soup.find(rel='next'):
                 break
             url = soup.find(rel='next').get('href')
+            time.sleep(0.5 * random.random())
         print('Done crawling all memebers: ')
         print(self.user_map)
 
@@ -61,8 +64,7 @@ class Crawler:
         print(self.user_contacts)
 
     def buildGraph(self):
-        graph = gv.Digraph(comment=self.group_id)
-        graph.format = 'png'
+        graph = gv.Digraph(comment=self.group_id, format = 'svg')
         self.crawlMembers()
         self.crawlContacts()
         for user in self.user_map:
