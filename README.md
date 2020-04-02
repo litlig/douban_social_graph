@@ -1,5 +1,5 @@
 # douban_social_graph
-Plots the social graph for members in a douban group
+Plots the social graph for members in a douban group.
 
 ## Instructions
 You need to install docker to build and run the program.
