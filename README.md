@@ -11,3 +11,4 @@ Build and run:
 docker build -t social-graph .
 docker run -it --rm  -v $(pwd)/output:/code/output social-graph <group_id> creds.yaml
 ```
+# just to test creds
